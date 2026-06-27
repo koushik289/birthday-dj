@@ -35,18 +35,18 @@ export const MONTHS = [
 ] as const;
 
 export const MONTH_SHORT = [
-  "JAN",
-  "FEB",
-  "MAR",
-  "APR",
-  "MAY",
-  "JUN",
-  "JUL",
-  "AUG",
-  "SEP",
-  "OCT",
-  "NOV",
-  "DEC",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ] as const;
 
 export const RELATIONSHIP_LABELS: Record<Relationship, string> = {
@@ -56,17 +56,25 @@ export const RELATIONSHIP_LABELS: Record<Relationship, string> = {
   other: "Other",
 };
 
+export const RELATIONSHIP_COLORS: Record<Relationship, string> = {
+  family: "#ff6b9d",
+  friend: "#6bcbff",
+  colleague: "#c77dff",
+  other: "#95e06c",
+};
+
+/** Flat neo-brutalism palette — one accent per month */
 export const MONTH_COLORS = [
-  { accent: "#ff006e", glow: "rgba(255, 0, 110, 0.4)" },
-  { accent: "#fb5607", glow: "rgba(251, 86, 7, 0.4)" },
-  { accent: "#ffbe0b", glow: "rgba(255, 190, 11, 0.4)" },
-  { accent: "#06ffa5", glow: "rgba(6, 255, 165, 0.4)" },
-  { accent: "#00f5ff", glow: "rgba(0, 245, 255, 0.4)" },
-  { accent: "#8338ec", glow: "rgba(131, 56, 236, 0.4)" },
-  { accent: "#3a86ff", glow: "rgba(58, 134, 255, 0.4)" },
-  { accent: "#ff006e", glow: "rgba(255, 0, 110, 0.4)" },
-  { accent: "#06ffa5", glow: "rgba(6, 255, 165, 0.4)" },
-  { accent: "#fb5607", glow: "rgba(251, 86, 7, 0.4)" },
-  { accent: "#8338ec", glow: "rgba(131, 56, 236, 0.4)" },
-  { accent: "#00f5ff", glow: "rgba(0, 245, 255, 0.4)" },
+  "#6bcbff",
+  "#ff6b9d",
+  "#95e06c",
+  "#c77dff",
+  "#ffe66d",
+  "#ff9f43",
+  "#ff6b6b",
+  "#4ecdc4",
+  "#c8f135",
+  "#ff9f43",
+  "#6bcbff",
+  "#ff6b9d",
 ] as const;

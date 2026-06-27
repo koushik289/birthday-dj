@@ -1,7 +1,8 @@
 import { type FC, useEffect, useState } from "react";
 import type { Birthday, BirthdayFormData, Relationship } from "../types/birthday";
-import { RELATIONSHIP_LABELS, MONTHS } from "../types/birthday";
+import { RELATIONSHIP_LABELS, RELATIONSHIP_COLORS, MONTHS } from "../types/birthday";
 import { daysInMonth, isValidBirthdayDate } from "../lib/dates";
+import { BrutalButton } from "./ui/BrutalButton";
 
 interface Props {
   isOpen: boolean;
@@ -20,6 +21,9 @@ const emptyForm = (month: number): BirthdayFormData => ({
   relationship: "friend",
   notes: "",
 });
+
+const inputClass =
+  "brutal-input w-full px-4 py-3 font-medium placeholder:text-black/40";
 
 export const BirthdayModal: FC<Props> = ({
   isOpen,
@@ -75,29 +79,39 @@ export const BirthdayModal: FC<Props> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center"
+      className="fixed inset-0 z-50 flex items-end justify-center p-4 sm:items-center"
       role="dialog"
       aria-modal="true"
       aria-labelledby="birthday-modal-title"
     >
       <button
         type="button"
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className="absolute inset-0 bg-brutal-black/40 brutal-dot-grid"
         onClick={onClose}
         aria-label="Close dialog"
       />
 
       <form
         onSubmit={handleSubmit}
-        className="relative z-10 w-full max-w-md rounded-t-3xl border border-white/10 bg-[#12121c] p-6 shadow-[0_-20px_60px_rgba(0,0,0,0.5)] sm:rounded-3xl"
+        className="relative z-10 w-full max-w-md brutal-border brutal-shadow-lg bg-brutal-surface p-6"
       >
-        <h2 id="birthday-modal-title" className="mb-6 text-left text-xl font-bold text-white">
-          {initial ? "Remix Entry" : "Drop a Birthday"}
-        </h2>
+        <div className="mb-6 flex items-start justify-between gap-4">
+          <h2 id="birthday-modal-title" className="text-left text-xl font-black uppercase">
+            {initial ? "Edit Birthday" : "Add Birthday"}
+          </h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className="brutal-border brutal-shadow-sm bg-brutal-red px-2 py-1 text-sm font-black text-white brutal-press"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
 
         <div className="space-y-4">
           <div>
-            <label htmlFor="name" className="mb-1.5 block text-left font-mono text-xs uppercase tracking-wider text-white/40">
+            <label htmlFor="name" className="mb-2 block text-left font-mono text-xs font-bold uppercase">
               Name
             </label>
             <input
@@ -105,7 +119,7 @@ export const BirthdayModal: FC<Props> = ({
               type="text"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-[#8338ec]/50 focus:ring-2 focus:ring-[#8338ec]/20"
+              className={inputClass}
               placeholder="Their name"
               autoFocus
             />
@@ -113,7 +127,7 @@ export const BirthdayModal: FC<Props> = ({
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label htmlFor="month" className="mb-1.5 block text-left font-mono text-xs uppercase tracking-wider text-white/40">
+              <label htmlFor="month" className="mb-2 block text-left font-mono text-xs font-bold uppercase">
                 Month
               </label>
               <select
@@ -127,10 +141,10 @@ export const BirthdayModal: FC<Props> = ({
                     day: Math.min(form.day, daysInMonth(month)),
                   });
                 }}
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-white outline-none focus:border-[#8338ec]/50"
+                className={inputClass}
               >
                 {MONTHS.map((m, i) => (
-                  <option key={m} value={i + 1} className="bg-[#12121c]">
+                  <option key={m} value={i + 1}>
                     {m}
                   </option>
                 ))}
@@ -138,17 +152,17 @@ export const BirthdayModal: FC<Props> = ({
             </div>
 
             <div>
-              <label htmlFor="day" className="mb-1.5 block text-left font-mono text-xs uppercase tracking-wider text-white/40">
+              <label htmlFor="day" className="mb-2 block text-left font-mono text-xs font-bold uppercase">
                 Day
               </label>
               <select
                 id="day"
                 value={form.day}
                 onChange={(e) => setForm({ ...form, day: Number(e.target.value) })}
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-white outline-none focus:border-[#8338ec]/50"
+                className={inputClass}
               >
                 {Array.from({ length: maxDay }, (_, i) => i + 1).map((d) => (
-                  <option key={d} value={d} className="bg-[#12121c]">
+                  <option key={d} value={d}>
                     {d}
                   </option>
                 ))}
@@ -156,7 +170,7 @@ export const BirthdayModal: FC<Props> = ({
             </div>
 
             <div>
-              <label htmlFor="year" className="mb-1.5 block text-left font-mono text-xs uppercase tracking-wider text-white/40">
+              <label htmlFor="year" className="mb-2 block text-left font-mono text-xs font-bold uppercase">
                 Year
               </label>
               <input
@@ -171,25 +185,31 @@ export const BirthdayModal: FC<Props> = ({
                     year: e.target.value ? Number(e.target.value) : undefined,
                   })
                 }
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-white outline-none focus:border-[#8338ec]/50"
+                className={inputClass}
                 placeholder="Opt."
               />
             </div>
           </div>
 
           <div>
-            <span className="mb-2 block text-left font-mono text-xs uppercase tracking-wider text-white/40">
+            <span className="mb-2 block text-left font-mono text-xs font-bold uppercase">
               Relationship
             </span>
             <div className="flex flex-wrap gap-2">
               {RELATIONSHIPS.map((rel) => (
                 <label
                   key={rel}
-                  className={`cursor-pointer rounded-full border px-3 py-1.5 font-mono text-xs uppercase tracking-wider transition ${
+                  className={[
+                    "cursor-pointer brutal-border brutal-press px-3 py-2 font-mono text-xs font-bold uppercase",
                     form.relationship === rel
-                      ? "border-[#8338ec] bg-[#8338ec]/20 text-[#c084fc]"
-                      : "border-white/10 bg-white/5 text-white/50 hover:border-white/20"
-                  }`}
+                      ? "brutal-press-active ring-2 ring-brutal-black ring-offset-1"
+                      : "brutal-shadow-sm bg-brutal-surface",
+                  ].join(" ")}
+                  style={
+                    form.relationship === rel
+                      ? { backgroundColor: RELATIONSHIP_COLORS[rel] }
+                      : undefined
+                  }
                 >
                   <input
                     type="radio"
@@ -206,7 +226,7 @@ export const BirthdayModal: FC<Props> = ({
           </div>
 
           <div>
-            <label htmlFor="notes" className="mb-1.5 block text-left font-mono text-xs uppercase tracking-wider text-white/40">
+            <label htmlFor="notes" className="mb-2 block text-left font-mono text-xs font-bold uppercase">
               Notes
             </label>
             <textarea
@@ -214,32 +234,25 @@ export const BirthdayModal: FC<Props> = ({
               value={form.notes ?? ""}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
               rows={2}
-              className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-[#8338ec]/50"
+              className={`${inputClass} resize-none`}
               placeholder="Gift ideas, reminders..."
             />
           </div>
 
           {error && (
-            <p role="alert" className="text-left text-sm text-red-400">
+            <p role="alert" className="brutal-border bg-brutal-red px-3 py-2 text-left text-sm font-bold text-white">
               {error}
             </p>
           )}
         </div>
 
         <div className="mt-6 flex gap-3">
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex-1 rounded-xl border border-white/10 py-3 font-mono text-xs uppercase tracking-wider text-white/60 transition hover:border-white/20"
-          >
+          <BrutalButton variant="secondary" className="flex-1" onClick={onClose}>
             Cancel
-          </button>
-          <button
-            type="submit"
-            className="flex-1 rounded-xl bg-gradient-to-r from-[#ff006e] to-[#8338ec] py-3 font-mono text-xs font-medium uppercase tracking-wider text-white shadow-[0_0_30px_rgba(131,56,236,0.3)] transition hover:shadow-[0_0_40px_rgba(131,56,236,0.5)]"
-          >
-            {initial ? "Save Mix" : "Add to Deck"}
-          </button>
+          </BrutalButton>
+          <BrutalButton type="submit" variant="primary" className="flex-1">
+            {initial ? "Save" : "Add"}
+          </BrutalButton>
         </div>
       </form>
     </div>

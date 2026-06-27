@@ -5,12 +5,10 @@ import type { Birthday, BirthdayFormData } from "../types/birthday";
 interface BirthdayState {
   birthdays: Birthday[];
   selectedMonth: number;
-  clubMode: boolean;
   addBirthday: (data: BirthdayFormData) => void;
   updateBirthday: (id: string, data: BirthdayFormData) => void;
   removeBirthday: (id: string) => void;
   setSelectedMonth: (month: number) => void;
-  toggleClubMode: () => void;
 }
 
 const SAMPLE_BIRTHDAYS: Birthday[] = [
@@ -30,7 +28,6 @@ export const useBirthdayStore = create<BirthdayState>()(
     (set) => ({
       birthdays: SAMPLE_BIRTHDAYS,
       selectedMonth: new Date().getMonth() + 1,
-      clubMode: false,
 
       addBirthday: (data) =>
         set((state) => ({
@@ -50,15 +47,10 @@ export const useBirthdayStore = create<BirthdayState>()(
         })),
 
       setSelectedMonth: (month) => set({ selectedMonth: month }),
-
-      toggleClubMode: () => set((state) => ({ clubMode: !state.clubMode })),
     }),
     {
-      name: "birthday-dj-storage",
-      partialize: (state) => ({
-        birthdays: state.birthdays,
-        clubMode: state.clubMode,
-      }),
+      name: "birthday-board-storage",
+      partialize: (state) => ({ birthdays: state.birthdays }),
     },
   ),
 );
